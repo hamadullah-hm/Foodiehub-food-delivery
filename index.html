@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie - Delicious Fast Food & Fast Delivery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!---------------Navbar--------------------------------->
+
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#hero-section">
+                    <img src="./Gallery/logo-removebg-preview.png" alt="Logo">
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <ul>
+                    <li><a href="#hero-section" class="active">Home</a></li>
+                    <li><a href="#popular-dishes">Menu</a></li>
+                    <li><a href="#about-section">About</a></li>
+                    <li><a href="#why-choose">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon" onclick="executeSearch()" title="Search"></i>
+                    <input type="search" id="navbar-search-input" placeholder="Search pizza, burger, fries..." oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" autocomplete="off">
+                </div>
+                <div class="search-dropdown" id="search-dropdown"></div>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="cart" title="Shopping Cart" onclick="openCartDrawer()" role="button" tabindex="0">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge">0</span>
+                </div>
+
+                <div class="auth-wrapper" id="auth-wrapper">
+                    <div class="guest-actions" id="guest-actions">
+                        <button class="login-btn" onclick="openAuthModal('login')">
+                            <i class="fa-regular fa-user"></i>
+                            <span>Login</span>
+                        </button>
+                        <button class="signup-btn" onclick="openAuthModal('signup')">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>Sign Up</span>
+                        </button>
+                    </div>
+
+                    <div class="user-profile-menu" id="user-profile-menu" style="display: none;">
+                        <div class="user-avatar-btn" onclick="toggleUserDropdown()" role="button" tabindex="0" title="Account Menu">
+                            <div class="user-avatar" id="navbar-user-avatar">JD</div>
+                            <span class="user-name-text" id="navbar-user-name">John Doe</span>
+                            <i class="fa-solid fa-chevron-down user-caret"></i>
+                        </div>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <strong id="dropdown-user-fullname">John Doe</strong>
+                                <span id="dropdown-user-email">demo@foodie.com</span>
+                            </div>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="javascript:void(0)" class="dropdown-item" onclick="showToast('My Profile 👤', 'Profile settings management coming soon!')">
+                                <i class="fa-regular fa-id-badge"></i> My Profile
+                            </a>
+                            <a href="javascript:void(0)" class="dropdown-item" onclick="openCartDrawer(); toggleUserDropdown(false);">
+                                <i class="fa-solid fa-bag-shopping"></i> My Orders
+                            </a>
+                            <div class="user-dropdown-divider"></div>
+                            <button type="button" class="dropdown-item logout-item" onclick="logoutUser()">
+                                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Toggle Navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!--Hero Section Start----------------------->
+
+    <section id="hero-section">
+       <div class="hero-container">
+           <div class="text-content reveal-left">
+            <h1 class="hero-head">Good Food <span id="span1">Great Mood</span></h1>
+            <p class="hero-para">From juicy burgers to cheesy pizza and crispy fries, we bring your favorite fast food straight to your door in 25 minutes.</p>
+           </div>
+
+           <div class="hero-btns reveal-left delay-1">
+            <button class="hero-btn-primary" onclick="document.getElementById('popular-dishes')?.scrollIntoView({behavior:'smooth'})">Order Now <i class="fa-solid fa-arrow-right"></i></button>
+            <button class="hero-btn-secondary" onclick="document.getElementById('category-section')?.scrollIntoView({behavior:'smooth'})">Explore Menu</button>
+           </div>
+            
+           <div class="rating reveal-up delay-2">
+               <div class="rating-item">
+                   <h3>30k+</h3>
+                   <p>Happy Diners</p>
+               </div>
+               <div class="rating-divider"></div>
+               <div class="rating-item">
+                   <h3>4.9 <i class="fa-solid fa-star"></i></h3>
+                   <p>Overall Rating</p>
+               </div>
+               <div class="rating-divider"></div>
+               <div class="rating-item">
+                   <h3>25 min</h3>
+                   <p>Avg Delivery</p>
+               </div>
+           </div>
+       </div>
+    </section>
+
+
+    <!--Items Category  Section -->
+
+    <section id="category-section">
+        <div class="category-text reveal-up">
+            <h3 class="category-head3">POPULAR CATEGORIES</h3>
+            <h2 class="category-head2">Explore Our <span id="span2">Categories</span></h2>
+            <p>Discover your favorite fast food and satisfy your cravings.</p>
+        </div>
+        <div class="category-items-container">
+            <!-- 1. Pizza -->
+            <a href="#dish-pizza" class="item reveal-left">
+                <div class="item-img-box">
+                    <img src="./Gallery/pizza.jpg" alt="Pizza">
+                </div>
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <div class="item-icon">
+                            <i class="fa-solid fa-pizza-slice"></i>
+                        </div>
+                        <h4 class="item-title">Pizza</h4>
+                    </div>
+                    <div class="item-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. Burgers -->
+            <a href="#dish-burgers" class="item reveal-up delay-1">
+                <div class="item-img-box">
+                    <img src="./Gallery/Burger2.jpg" alt="Burgers">
+                </div>
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <div class="item-icon">
+                            <i class="fa-solid fa-burger"></i>
+                        </div>
+                        <h4 class="item-title">Burgers</h4>
+                    </div>
+                    <div class="item-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 3. Fries -->
+            <a href="#dish-fries" class="item reveal-right delay-2">
+                <div class="item-img-box">
+                    <img src="./Gallery/French-Fries.jpg" alt="Fries">
+                </div>
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <div class="item-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 10h14l-1.5 11h-11L5 10z"></path>
+                                <path d="M8 10V4a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v6"></path>
+                                <path d="M11 10V2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v8"></path>
+                                <path d="M14 10V5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v5"></path>
+                            </svg>
+                        </div>
+                        <h4 class="item-title">Fries</h4>
+                    </div>
+                    <div class="item-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 4. Shawarma -->
+            <a href="#dish-shawarma" class="item reveal-left delay-1">
+                <div class="item-img-box">
+                    <img src="./Gallery/shwarrma.jpg" alt="Shawarma">
+                </div>
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <div class="item-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="3" width="16" height="18" rx="6" transform="rotate(15 12 12)"></rect>
+                                <line x1="8" y1="9" x2="16" y2="7"></line>
+                                <line x1="7" y1="13" x2="15" y2="11"></line>
+                                <line x1="6" y1="17" x2="14" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h4 class="item-title">Shawarma</h4>
+                    </div>
+                    <div class="item-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 5. Chicken -->
+            <a href="#dish-chicken" class="item reveal-up delay-2">
+                <div class="item-img-box">
+                    <img src="./Gallery/chicken.jpg" alt="Chicken">
+                </div>
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <div class="item-icon">
+                            <i class="fa-solid fa-drumstick-bite"></i>
+                        </div>
+                        <h4 class="item-title">Chicken</h4>
+                    </div>
+                    <div class="item-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 6. Desserts -->
+            <a href="#dish-desserts" class="item reveal-right delay-3">
+                <div class="item-img-box">
+                    <img src="./Gallery/desert.jpg" alt="Desserts">
+                </div>
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <div class="item-icon">
+                            <i class="fa-solid fa-cake-candles"></i>
+                        </div>
+                        <h4 class="item-title">Desserts</h4>
+                    </div>
+                    <div class="item-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-------------------About Section-->
+
+    <section id="about-section">
+        <div class="div-container">
+            <div class="box box1 reveal-left">
+                <img src="./Gallery/about.png" alt="About FoodieHub">
+            </div>
+            <div class="box box2 reveal-right">
+                <h3 class="about-head3">About FoodieHub</h3>
+                <h2 class="about-head2">Delicious Food, Right to Your <span id="span4">Doorstep</span></h2>
+                <p>At FoodieHub, we bring your favorite fast food straight to your doorstep. From juicy burgers and cheesy pizzas to crispy fries and delicious desserts, we make every craving worth satisfying.</p>
+                <button class="btn3" onclick="document.getElementById('popular-dishes')?.scrollIntoView({behavior:'smooth'})">Learn More <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+         <!--Popular Dishes Categories Section-->
+
+         <section id="popular-dishes">
+                <div class="popular-text-content reveal-up">
+                    <h3 class="popular-head3">POPULAR DISHES</h3>
+                    <h2 class="popular-head2">Our Most Loved <span id="span5">Dishes</span></h2>
+                    <p class="popular-desc">Enjoy our most-loved fast food favorites, freshly prepared with quality ingredients and packed with delicious flavors.</p>
+                </div>
+            
+                <div class="popular-dishes-main-container" id="popular-dishes-container">
+                    <!-- Dishes dynamically loaded via script.js -->
+                </div>
+         </section>
+
+    <!-- Dish Customization Modal (Pizza & Food Size / Quantity Selector) -->
+    <div class="modal-backdrop" id="dish-modal" onclick="handleBackdropClick(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeDishModal()" title="Close menu" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-grid">
+                <div class="modal-img-col">
+                    <img id="modal-dish-img" src="" alt="Dish Preview">
+                    <div class="modal-img-badge" id="modal-dish-badge">Popular</div>
+                </div>
+                <div class="modal-details-col">
+                    <div class="modal-head">
+                        <div class="modal-category" id="modal-dish-category">Fast Food</div>
+                        <h2 class="modal-title" id="modal-dish-title">Pepperoni Pizza</h2>
+                        <div class="modal-rating" id="modal-dish-rating">
+                            <i class="fa-solid fa-star"></i>
+                            <span>4.9</span>
+                        </div>
+                    </div>
+                    <p class="modal-desc" id="modal-dish-desc">Freshly baked pizza topped with rich tomato sauce...</p>
+
+                    <!-- Size Variation Section -->
+                    <div class="modal-section">
+                        <div class="section-title-wrap">
+                            <h4 class="section-title">1. Select Size</h4>
+                            <span class="required-tag">Required</span>
+                        </div>
+                        <div class="size-options-grid" id="modal-size-options">
+                            <!-- Dynamic Size Radio Cards -->
+                        </div>
+                    </div>
+
+                    <!-- Add-ons Section -->
+                    <div class="modal-section">
+                        <div class="section-title-wrap">
+                            <h4 class="section-title">2. Extra Add-ons</h4>
+                            <span class="optional-tag">Optional</span>
+                        </div>
+                        <div class="addons-list" id="modal-addons-list">
+                            <!-- Dynamic Addon Checkboxes -->
+                        </div>
+                    </div>
+
+                    <!-- Quantity & Add to Cart Footer -->
+                    <div class="modal-footer-action">
+                        <div class="qty-stepper">
+                            <button type="button" class="qty-btn" onclick="updateModalQty(-1)" aria-label="Decrease quantity">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <span class="qty-count" id="modal-qty-display">1</span>
+                            <button type="button" class="qty-btn" onclick="updateModalQty(1)" aria-label="Increase quantity">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <button class="modal-add-btn" id="modal-submit-btn" onclick="confirmAddToCart()">
+                            <span class="btn-text">Add to Cart</span>
+                            <span class="btn-price" id="modal-total-price">Rs. 1,199</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth (Login & Sign Up) Modal -->
+    <div class="modal-backdrop" id="auth-modal" onclick="handleAuthBackdropClick(event)">
+        <div class="auth-modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeAuthModal()" title="Close modal" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header / Tabs -->
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
+                <button type="button" class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">
+                    <i class="fa-solid fa-user-plus"></i> Sign Up
+                </button>
+            </div>
+
+            <!-- Login Form Pane -->
+            <div class="auth-form-pane active" id="login-form-pane">
+                <div class="auth-header">
+                    <h3>Welcome Back! 👋</h3>
+                    <p>Log in to your FoodieHub account to order your favorites.</p>
+                </div>
+
+                <form id="login-form" onsubmit="handleLoginSubmit(event)">
+                    <div class="auth-alert error" id="login-error" style="display: none;"></div>
+                    
+                    <div class="input-group">
+                        <label for="login-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" placeholder="example@email.com" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label for="login-password">Password</label>
+                            <a href="javascript:void(0)" class="forgot-link" onclick="handleForgotPassword()">Forgot Password?</a>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('login-password', this)" aria-label="Toggle password visibility">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="auth-checkbox-row">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="remember-me" checked>
+                            <span class="checkbox-text">Remember me on this device</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn" id="login-submit-btn">
+                        <span>Log In</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="demo-account-hint">
+                        <span>💡 Quick Demo: <strong>demo@foodie.com</strong> / <strong>123456</strong></span>
+                        <button type="button" class="fill-demo-btn" onclick="fillDemoCredentials()">Auto Fill</button>
+                    </div>
+
+                    <div class="auth-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div class="social-login-grid">
+                        <button type="button" class="social-btn" onclick="handleSocialAuth('Google')">
+                            <i class="fa-brands fa-google"></i>
+                            <span>Google</span>
+                        </button>
+                        <button type="button" class="social-btn" onclick="handleSocialAuth('Facebook')">
+                            <i class="fa-brands fa-facebook-f"></i>
+                            <span>Facebook</span>
+                        </button>
+                    </div>
+
+                    <div class="auth-footer-text">
+                        Don't have an account? <a href="javascript:void(0)" onclick="switchAuthTab('signup')">Create Account</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Sign Up Form Pane -->
+            <div class="auth-form-pane" id="signup-form-pane">
+                <div class="auth-header">
+                    <h3>Create Your Account 🚀</h3>
+                    <p>Join FoodieHub to enjoy superfast delivery and rewards.</p>
+                </div>
+
+                <form id="signup-form" onsubmit="handleSignUpSubmit(event)">
+                    <div class="auth-alert error" id="signup-error" style="display: none;"></div>
+
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user input-icon"></i>
+                            <input type="text" id="signup-name" placeholder="Enter your name" required autocomplete="name">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input type="email" id="signup-email" placeholder="example@email.com" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signup-phone">Phone Number</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone input-icon"></i>
+                            <input type="tel" id="signup-phone" placeholder="0300 1234567" required autocomplete="tel">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signup-password">Create Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="signup-password" placeholder="Min. 6 characters" required minlength="6" autocomplete="new-password">
+                            <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('signup-password', this)" aria-label="Toggle password visibility">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="auth-checkbox-row">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="terms-agree" required checked>
+                            <span class="checkbox-text">I agree to the <a href="javascript:void(0)" onclick="showToast('Terms & Conditions', 'Our customer terms ensure safety and fast service.')">Terms & Conditions</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn" id="signup-submit-btn">
+                        <span>Create Account</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="auth-footer-text">
+                        Already have an account? <a href="javascript:void(0)" onclick="switchAuthTab('login')">Log In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+         <section id="why-choose">
+            <div class="why-choose-text reveal-up">
+                <h3 class="Choose-us-head3" >WHY CHOOSE US</h3>
+                <h2 class="why-choose-head2">Why Choose <span id="span6">FoodiHub?</span></h2>
+                <p>We’re more than just a food delivery service. We’re your partner in satisfying cravings with fresh, delicious and high-quality food.</p>
+            </div>
+
+            <div class="why-choose-us-box-container">
+                <div class="card reveal-left">
+                    <div class="card-text">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h2>Fast Delivery</h2>
+                    <p>Hot and fresh food, delivered to your doorstep quickly and safely.</p>
+                   </div>
+                </div>
+                <div class="card reveal-left delay-1">
+                    <div class="card-text">
+                        <i class="fa-solid fa-leaf"></i>
+                        <h2>Fresh Ingredients</h2>
+                        <p>We use only the freshest and highest quality ingredients in every dish.</p>
+                    </div>
+                </div>
+                <div class="card reveal-right delay-2">
+                    <div class="card-text">
+                        <i class="fa-solid fa-star"></i>
+                         <h2>Best Quality</h2>
+                         <p>Our chefs prepare every meal with care, ensuring great taste and top quality.</p>
+                    </div>
+                </div>
+                <div class="card reveal-right delay-3">
+                    <div class="card-text">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <h2>Easy Payment</h2>
+                        <p>Enjoy simple, secure and flexible payment options for a hassle-free experience.</p>
+                    </div>
+                </div>
+            </div>
+         </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact">
+        <div class="contact-text-header reveal-up">
+            <h3 class="contact-head3">GET IN TOUCH</h3>
+            <h2 class="contact-head2">Contact <span id="span7">Us</span></h2>
+            <p>Have a question, catering request, or feedback? Reach out to our 24/7 team anytime!</p>
+        </div>
+
+        <div class="contact-main-grid">
+            <!-- Left Side: Contact Information Card -->
+            <div class="contact-info-card reveal-left">
+                <div class="info-card-header">
+                    <h3>Contact Information</h3>
+                    <p>Feel free to reach out to us through any channel below. We respond swiftly to all inquiries.</p>
+                </div>
+
+                <div class="contact-info-list">
+                    <div class="contact-info-item">
+                        <div class="info-icon-box">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <h4>Our Location</h4>
+                            <p>123 Food Street, Gulberg III, Lahore, Pakistan</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="info-icon-box">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <h4>Phone Numbers</h4>
+                            <p>+92 (300) 123-4567<br>+92 (42) 3578-9000</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="info-icon-box">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <h4>Email Address</h4>
+                            <p>support@foodiehub.com<br>orders@foodiehub.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="info-icon-box">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="info-item-text">
+                            <h4>Delivery Hours</h4>
+                            <p>Mon - Sun: 11:00 AM - 03:00 AM (Late Night Service)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="contact-social-wrap">
+                    <span>Follow Us:</span>
+                    <div class="contact-social-icons">
+                        <a href="javascript:void(0)" class="social-circle" title="Facebook" onclick="showToast('Social', 'Opening Facebook page...')"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="social-circle" title="Instagram" onclick="showToast('Social', 'Opening Instagram profile...')"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="javascript:void(0)" class="social-circle" title="WhatsApp" onclick="showToast('WhatsApp', 'Connecting to WhatsApp support...')"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="javascript:void(0)" class="social-circle" title="Twitter" onclick="showToast('Twitter', 'Opening Twitter feed...')"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Form Card -->
+            <div class="contact-form-card reveal-right">
+                <div class="form-card-header">
+                    <h3>Send Us a Message</h3>
+                    <p>Fill out this form and we'll get back to you within minutes.</p>
+                </div>
+
+                <form id="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-row-2">
+                        <div class="input-group">
+                            <label for="contact-name">Your Name</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-user input-icon"></i>
+                                <input type="text" id="contact-name" placeholder="Enter your name" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="contact-email">Your Email</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-envelope input-icon"></i>
+                                <input type="email" id="contact-email" placeholder="example@email.com" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="input-group">
+                            <label for="contact-phone">Phone Number</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-phone input-icon"></i>
+                                <input type="tel" id="contact-phone" placeholder="0300 1234567" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="contact-subject">Subject</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-tag input-icon"></i>
+                                <input type="text" id="contact-subject" placeholder="Order inquiry, feedback..." required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="contact-message">Message</label>
+                        <div class="input-wrapper textarea-wrapper">
+                            <i class="fa-regular fa-comment-dots input-icon textarea-icon"></i>
+                            <textarea id="contact-message" rows="4" placeholder="Write your message or inquiry here..." required></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="contact-submit-btn">
+                        <span>Send Message</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-top-container reveal-up">
+            <div class="footer-grid">
+                <!-- Col 1: Brand Info -->
+                <div class="footer-col brand-col">
+                    <a href="#hero-section" class="footer-logo">
+                        <img src="./Gallery/logo-removebg-preview.png" alt="FoodieHub Logo">
+                    </a>
+                    <p class="footer-desc">
+                        Serving the freshest fast food, from handcrafted burgers to hot cheesy pizzas. Delivered hot and fresh right to your door with love.
+                    </p>
+                    <div class="footer-social-links">
+                        <a href="javascript:void(0)" class="f-social-btn" aria-label="Facebook" onclick="showToast('Social', 'Opening Facebook...')"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="f-social-btn" aria-label="Instagram" onclick="showToast('Social', 'Opening Instagram...')"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="javascript:void(0)" class="f-social-btn" aria-label="WhatsApp" onclick="showToast('WhatsApp', 'Connecting to WhatsApp...')"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="javascript:void(0)" class="f-social-btn" aria-label="Twitter" onclick="showToast('Twitter', 'Opening Twitter...')"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="javascript:void(0)" class="f-social-btn" aria-label="YouTube" onclick="showToast('YouTube', 'Opening YouTube channel...')"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero-section"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+                        <li><a href="#popular-dishes"><i class="fa-solid fa-angle-right"></i> Popular Menu</a></li>
+                        <li><a href="#about-section"><i class="fa-solid fa-angle-right"></i> About Us</a></li>
+                        <li><a href="#why-choose"><i class="fa-solid fa-angle-right"></i> Why Choose Us</a></li>
+                        <li><a href="#contact"><i class="fa-solid fa-angle-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Categories -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Top Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#dish-pizza"><i class="fa-solid fa-angle-right"></i> Cheesy Pizzas</a></li>
+                        <li><a href="#dish-burgers"><i class="fa-solid fa-angle-right"></i> Grilled Burgers</a></li>
+                        <li><a href="#dish-fries"><i class="fa-solid fa-angle-right"></i> Loaded Fries</a></li>
+                        <li><a href="#dish-chicken"><i class="fa-solid fa-angle-right"></i> Crispy Chicken</a></li>
+                        <li><a href="#dish-desserts"><i class="fa-solid fa-angle-right"></i> Sweet Desserts</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter & Deals -->
+                <div class="footer-col newsletter-col">
+                    <h4 class="footer-heading">Get 15% Discount</h4>
+                    <p class="newsletter-desc">Subscribe to our newsletter for exclusive deals, secret recipes, and special promo codes.</p>
+                    <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                        <div class="newsletter-input-box">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="newsletter-email" placeholder="Your email address..." required>
+                        </div>
+                        <button type="submit" class="newsletter-btn">
+                            <span>Subscribe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                    <div class="footer-hotline">
+                        <i class="fa-solid fa-headset"></i>
+                        <div>
+                            <span>24/7 Order Support</span>
+                            <strong>+92 300 1234567</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom Bar -->
+        <div class="footer-bottom reveal-up delay-1">
+            <div class="footer-bottom-container">
+                <p>&copy; 2026 FoodieHub. All rights reserved. Crafted with delicious passion.</p>
+                <div class="footer-bottom-links">
+                    <a href="javascript:void(0)" onclick="showToast('Privacy Policy', 'Your privacy and data are protected with FoodieHub.')">Privacy Policy</a>
+                    <span class="dot-divider">•</span>
+                    <a href="javascript:void(0)" onclick="showToast('Terms of Service', 'Standard fast food delivery and safety guidelines apply.')">Terms of Service</a>
+                    <span class="dot-divider">•</span>
+                    <a href="javascript:void(0)" onclick="showToast('Cookie Policy', 'Cookies are used to enhance your ordering experience.')">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+
+
+    <!-- Cart Drawer & Overlay -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="closeCartDrawer()"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-drawer-header">
+            <div class="cart-header-title">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <h3>Your Order (<span id="cart-item-count">0</span>)</h3>
+            </div>
+            <button class="cart-close-btn" onclick="closeCartDrawer()" title="Close Cart" aria-label="Close Cart">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="cart-drawer-body" id="cart-items-container">
+            <!-- Dynamic Cart Items or Empty State -->
+        </div>
+
+        <div class="cart-drawer-footer" id="cart-drawer-footer">
+            <div class="cart-summary-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">Rs. 0</span>
+            </div>
+            <div class="cart-summary-row">
+                <span>Delivery Fee</span>
+                <span class="free-badge">FREE</span>
+            </div>
+            <div class="cart-summary-divider"></div>
+            <div class="cart-summary-row total-row">
+                <span>Total</span>
+                <span id="cart-grand-total">Rs. 0</span>
+            </div>
+            <button class="checkout-btn" onclick="handleCheckout()">
+                <span>Proceed to Checkout</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Toast Notification -->
+    <div class="cart-toast" id="cart-toast">
+        <div class="toast-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="toast-content">
+            <h5 id="toast-title">Added to Cart!</h5>
+            <p id="toast-desc">Item has been added to your order.</p>
+        </div>
+    </div>
+
+
+
+    <!-- Scripts -->
+    <script src="./script.js"></script>
+</body>
+</html>
